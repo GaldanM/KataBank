@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HistoryTest {
   @Test
   void emptyHistory() {
-    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
 
     List<Operation> operations = bankAccount.checkHistory();
 
@@ -16,7 +16,7 @@ public class HistoryTest {
 
   @Test
   void oneDepositHistory() {
-    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
 
     bankAccount.deposit(1);
     List<Operation> operations = bankAccount.checkHistory();
@@ -30,7 +30,7 @@ public class HistoryTest {
 
   @Test
   void twoDepositsHistory() {
-    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
 
     bankAccount.deposit(1);
     bankAccount.deposit(1);
@@ -45,7 +45,7 @@ public class HistoryTest {
 
   @Test
   void withdrawalHistory() {
-    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
 
     bankAccount.withdraw(1);
     List<Operation> operations = bankAccount.checkHistory();

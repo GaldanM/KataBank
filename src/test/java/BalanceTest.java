@@ -1,13 +1,11 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BalanceTest {
   @Test
   void deposit() {
-    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
     Integer balance = bankAccount.deposit(1);
 
     assertThat(balance).isEqualTo(1);
@@ -15,7 +13,7 @@ public class BalanceTest {
 
   @Test
   void depositTwice() {
-    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
 
     bankAccount.deposit(2);
     Integer balance = bankAccount.deposit(2);
@@ -25,7 +23,7 @@ public class BalanceTest {
 
   @Test
   void withdraw() {
-    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
 
     Integer balance = bankAccount.withdraw(1);
 
@@ -34,7 +32,7 @@ public class BalanceTest {
 
   @Test
   void withdrawTwice() {
-    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
 
     bankAccount.withdraw(2);
     Integer balance = bankAccount.withdraw(2);

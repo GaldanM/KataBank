@@ -1,19 +1,18 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class BankAccount {
-  ArrayList<Operation> operations;
   BankAccountRepository bankAccountRepository;
+  OperationRepository operationRepository;
 
-  BankAccount(BankAccountRepository bankAccountRepository) {
+  BankAccount(BankAccountRepository bankAccountRepository, OperationRepository operationRepository) {
     this.bankAccountRepository = bankAccountRepository;
-    this.operations = new ArrayList<>();
+    this.operationRepository = operationRepository;
   }
 
   public Integer deposit(Integer amountToDeposit) {
     Integer balance = this.bankAccountRepository.deposit(amountToDeposit);
 
-    this.operations.add(new Operation(Operation.OperationType.DEPOSIT, amountToDeposit, balance));
+    this.operationRepository.create(Operation.OperationType.DEPOSIT, amountToDeposit, balance);
 
     return balance;
   }
@@ -21,12 +20,12 @@ public class BankAccount {
   public Integer withdraw(Integer amountToWithdraw) {
     Integer balance = this.bankAccountRepository.withdraw(amountToWithdraw);;
 
-    this.operations.add(new Operation(Operation.OperationType.WITHDRAW, amountToWithdraw, balance));
+    this.operationRepository.create(Operation.OperationType.WITHDRAW, amountToWithdraw, balance);
 
     return balance;
   }
 
   public List<Operation> checkHistory() {
-    return this.operations;
+    return this.operationRepository.get();
   }
 }
