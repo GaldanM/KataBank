@@ -27,4 +27,19 @@ public class HistoryTest {
     assertThat(operationToCheck.amount).isEqualTo(1);
     assertThat(operationToCheck.balanceAfterOperation).isEqualTo(1);
   }
+
+  @Test
+  void twoDepositsHistory() {
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+
+    bankAccount.deposit(1);
+    bankAccount.deposit(1);
+    List<Operation> operations = bankAccount.checkHistory();
+
+    assertThat(operations).hasSize(2);
+    boolean allMatch = operations.stream().allMatch(operation -> Operation.OperationType.DEPOSIT.equals(operation.type) && operation.amount.equals(1));
+    assertThat(allMatch).isTrue();
+    assertThat(operations.get(0).balanceAfterOperation).isEqualTo(1);
+    assertThat(operations.get(1).balanceAfterOperation).isEqualTo(2);
+  }
 }
