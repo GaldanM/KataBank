@@ -40,8 +40,25 @@ public class BalanceTest {
     assertThat(balance).isEqualTo(-4);
   }
 
+  @Test
+  void depositTwiceOnTwoAccounts() {
+    BankAccountRepository bankAccountRepository = new BankAccountRepositoryInMemory();
+    OperationRepositoryInMemory operationRepository = new OperationRepositoryInMemory();
+
+    BankAccount firstBankAccount = new BankAccount(bankAccountRepository, operationRepository, 1);
+    BankAccount secondBankAccount = new BankAccount(bankAccountRepository, operationRepository, 2);
+
+    firstBankAccount.deposit(1);
+    Integer balanceFirstBankAccount = firstBankAccount.deposit(1);
+    secondBankAccount.deposit(2);
+    Integer balanceSecondBankAccount = secondBankAccount.deposit(2);
+
+    assertThat(balanceFirstBankAccount).isEqualTo(2);
+    assertThat(balanceSecondBankAccount).isEqualTo(4);
+  }
+
   private BankAccount createBankAccount() {
-    return new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    return new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory(), 1);
   }
 }
 

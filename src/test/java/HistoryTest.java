@@ -58,6 +58,6 @@ public class HistoryTest {
   }
 
   private BankAccount createBankAccount() {
-    return new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    return new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory(), 1);
   }
 }
