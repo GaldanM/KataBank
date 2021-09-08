@@ -8,4 +8,8 @@ public class BankAccount {
   public Integer deposit(Integer amountToDeposit) {
     return this.bankAccountRepository.deposit(amountToDeposit);
   }
+
+  public Integer withdraw(Integer amountToWithdraw) {
+    return -1;
+  }
 }

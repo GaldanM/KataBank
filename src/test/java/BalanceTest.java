@@ -20,6 +20,15 @@ public class BalanceTest {
 
     assertThat(balance).isEqualTo(4);
   }
+
+  @Test
+  void withdraw() {
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+
+    Integer balance = bankAccount.withdraw(1);
+
+    assertThat(balance).isEqualTo(-1);
+  }
 }
 
 
