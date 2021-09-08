@@ -14,20 +14,20 @@ public class BankAccount {
   public Integer deposit(Integer amountToDeposit) {
     Integer balance = this.bankAccountRepository.deposit(this.id, amountToDeposit);
 
-    this.operationRepository.create(Operation.OperationType.DEPOSIT, amountToDeposit, balance);
+    this.operationRepository.create(this.id, Operation.OperationType.DEPOSIT, amountToDeposit, balance);
 
     return balance;
   }
 
   public Integer withdraw(Integer amountToWithdraw) {
-    Integer balance = this.bankAccountRepository.withdraw(this.id, amountToWithdraw);;
+    Integer balance = this.bankAccountRepository.withdraw(this.id, amountToWithdraw);
 
-    this.operationRepository.create(Operation.OperationType.WITHDRAW, amountToWithdraw, balance);
+    this.operationRepository.create(this.id, Operation.OperationType.WITHDRAW, amountToWithdraw, balance);
 
     return balance;
   }
 
   public List<Operation> checkHistory() {
-    return this.operationRepository.get();
+    return this.operationRepository.get(this.id);
   }
 }

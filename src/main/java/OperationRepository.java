@@ -1,7 +1,7 @@
 import java.util.List;
 
 public interface OperationRepository {
-  void create(Operation.OperationType type, Integer amount, Integer balanceAfterOperation);
+  void create(Integer bankAccountId, Operation.OperationType type, Integer amount, Integer balanceAfterOperation);
 
-  List<Operation> get();
+  List<Operation> get(Integer bankAccountId);
 }

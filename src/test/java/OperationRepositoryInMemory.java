@@ -1,22 +1,41 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OperationRepositoryInMemory implements OperationRepository {
-  ArrayList<Operation> operations;
+  Map<Integer, List<Operation>> accountsOperations;
 
   OperationRepositoryInMemory() {
-    this.operations = new ArrayList<>();
+    this.accountsOperations = new HashMap<>();
   }
 
   @Override
-  public void create(Operation.OperationType type, Integer amount, Integer balanceAfterOperation) {
+  public void create(
+      Integer bankAccountId,
+      Operation.OperationType type,
+      Integer amount,
+      Integer balanceAfterOperation
+  ) {
     Operation newOperation = new Operation(type, amount, balanceAfterOperation);
 
-    this.operations.add(newOperation);
+    this.accountsOperations.merge(
+        bankAccountId,
+        new ArrayList<>() {{ add(newOperation); }},
+        (oldList, newList) -> Stream.concat(oldList.stream(), newList.stream()).collect(Collectors.toList())
+    );
   }
 
   @Override
-  public List<Operation> get() {
-    return this.operations;
+  public List<Operation> get(Integer bankAccountId) {
+    List<Operation> operations = this.accountsOperations.get(bankAccountId);
+
+    if (operations == null) {
+      return new ArrayList<>();
+    }
+
+    return this.accountsOperations.get(bankAccountId);
   }
 }
