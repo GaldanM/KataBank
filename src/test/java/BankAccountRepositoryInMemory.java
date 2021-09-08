@@ -11,4 +11,11 @@ public class BankAccountRepositoryInMemory implements BankAccountRepository {
 
     return this.balance;
   }
+
+  @Override
+  public Integer withdraw(Integer amountToWithdraw) {
+    this.balance -= amountToWithdraw;
+
+    return this.balance;
+  }
 }

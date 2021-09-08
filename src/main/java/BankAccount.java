@@ -10,6 +10,6 @@ public class BankAccount {
   }
 
   public Integer withdraw(Integer amountToWithdraw) {
-    return -1;
+    return this.bankAccountRepository.withdraw(amountToWithdraw);
   }
 }

@@ -1,3 +1,5 @@
 public interface BankAccountRepository {
-  public Integer deposit(Integer amountToDeposit);
+  Integer deposit(Integer amountToDeposit);
+
+  Integer withdraw(Integer amountToWithdraw);
 }

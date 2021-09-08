@@ -29,6 +29,16 @@ public class BalanceTest {
 
     assertThat(balance).isEqualTo(-1);
   }
+
+  @Test
+  void withdrawTwice() {
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+
+    bankAccount.withdraw(2);
+    Integer balance = bankAccount.withdraw(2);
+
+    assertThat(balance).isEqualTo(-4);
+  }
 }
 
 
