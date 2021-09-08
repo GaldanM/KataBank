@@ -1,3 +1,7 @@
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
 public class BankAccount {
   BankAccountRepository bankAccountRepository;
 
@@ -11,5 +15,10 @@ public class BankAccount {
 
   public Integer withdraw(Integer amountToWithdraw) {
     return this.bankAccountRepository.withdraw(amountToWithdraw);
+  }
+
+  public List<Operation> checkHistory() {
+    Operation[] operations = {};
+    return Arrays.asList(operations);
   }
 }
