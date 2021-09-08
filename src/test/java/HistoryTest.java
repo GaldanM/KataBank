@@ -42,4 +42,18 @@ public class HistoryTest {
     assertThat(operations.get(0).balanceAfterOperation).isEqualTo(1);
     assertThat(operations.get(1).balanceAfterOperation).isEqualTo(2);
   }
+
+  @Test
+  void withdrawalHistory() {
+    BankAccount bankAccount = new BankAccount(new BankAccountRepositoryInMemory());
+
+    bankAccount.withdraw(1);
+    List<Operation> operations = bankAccount.checkHistory();
+
+    assertThat(operations).hasSize(1);
+    Operation operationToCheck = operations.get(0);
+    assertThat(operationToCheck.type).isEqualTo(Operation.OperationType.WITHDRAW);
+    assertThat(operationToCheck.amount).isEqualTo(1);
+    assertThat(operationToCheck.balanceAfterOperation).isEqualTo(-1);
+  }
 }

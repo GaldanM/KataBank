@@ -14,6 +14,7 @@ public class Operation {
   }
 
   public enum OperationType {
-    DEPOSIT
+    DEPOSIT,
+    WITHDRAW;
   }
 }

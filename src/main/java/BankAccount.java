@@ -19,7 +19,11 @@ public class BankAccount {
   }
 
   public Integer withdraw(Integer amountToWithdraw) {
-    return this.bankAccountRepository.withdraw(amountToWithdraw);
+    Integer balance = this.bankAccountRepository.withdraw(amountToWithdraw);;
+
+    this.operations.add(new Operation(Operation.OperationType.WITHDRAW, amountToWithdraw, balance));
+
+    return balance;
   }
 
   public List<Operation> checkHistory() {
