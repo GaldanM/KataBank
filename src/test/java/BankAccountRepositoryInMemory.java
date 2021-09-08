@@ -3,11 +3,9 @@ import java.util.Map;
 
 public class BankAccountRepositoryInMemory implements BankAccountRepository {
   Map<Integer, Integer> accountsBalances;
-  Integer balance;
 
   public BankAccountRepositoryInMemory() {
     this.accountsBalances = new HashMap<>();
-    this.balance = 0;
   }
 
   @Override
@@ -16,9 +14,7 @@ public class BankAccountRepositoryInMemory implements BankAccountRepository {
   }
 
   @Override
-  public Integer withdraw(Integer amountToWithdraw) {
-    this.balance -= amountToWithdraw;
-
-    return this.balance;
+  public Integer withdraw(Integer bankAccountId, Integer amountToWithdraw) {
+    return this.accountsBalances.merge(bankAccountId, -amountToWithdraw, Integer::sum);
   }
 }

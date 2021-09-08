@@ -20,7 +20,7 @@ public class BankAccount {
   }
 
   public Integer withdraw(Integer amountToWithdraw) {
-    Integer balance = this.bankAccountRepository.withdraw(amountToWithdraw);;
+    Integer balance = this.bankAccountRepository.withdraw(this.id, amountToWithdraw);;
 
     this.operationRepository.create(Operation.OperationType.WITHDRAW, amountToWithdraw, balance);
 

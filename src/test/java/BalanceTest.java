@@ -57,6 +57,23 @@ public class BalanceTest {
     assertThat(balanceSecondBankAccount).isEqualTo(4);
   }
 
+  @Test
+  void withdrawTwiceOnTwoAccounts() {
+    BankAccountRepository bankAccountRepository = new BankAccountRepositoryInMemory();
+    OperationRepositoryInMemory operationRepository = new OperationRepositoryInMemory();
+
+    BankAccount firstBankAccount = new BankAccount(bankAccountRepository, operationRepository, 1);
+    BankAccount secondBankAccount = new BankAccount(bankAccountRepository, operationRepository, 2);
+
+    firstBankAccount.withdraw(1);
+    Integer balanceFirstBankAccount = firstBankAccount.withdraw(1);
+    secondBankAccount.withdraw(2);
+    Integer balanceSecondBankAccount = secondBankAccount.withdraw(2);
+
+    assertThat(balanceFirstBankAccount).isEqualTo(-2);
+    assertThat(balanceSecondBankAccount).isEqualTo(-4);
+  }
+
   private BankAccount createBankAccount() {
     return new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory(), 1);
   }
