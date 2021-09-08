@@ -1,13 +1,11 @@
 public class BankAccount {
-  Integer balance;
+  BankAccountRepository bankAccountRepository;
 
-  BankAccount() {
-    this.balance = 0;
+  BankAccount(BankAccountRepository bankAccountRepository) {
+    this.bankAccountRepository = bankAccountRepository;
   }
 
   public Integer deposit(Integer amountToDeposit) {
-    this.balance += amountToDeposit;
-
-    return this.balance;
+    return this.bankAccountRepository.deposit(amountToDeposit);
   }
 }
