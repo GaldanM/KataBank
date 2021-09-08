@@ -1,5 +1,13 @@
 public class BankAccount {
+  Integer balance;
+
+  BankAccount() {
+    this.balance = 0;
+  }
+
   public Integer deposit(Integer amountToDeposit) {
-    return 1;
+    this.balance += amountToDeposit;
+
+    return this.balance;
   }
 }

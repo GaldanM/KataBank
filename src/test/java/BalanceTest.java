@@ -10,6 +10,15 @@ public class BalanceTest {
 
     assertThat(balance).isEqualTo(1);
   }
+
+  @Test
+  void depositTwice() {
+    BankAccount bankAccount = new BankAccount();
+    bankAccount.deposit(2);
+    Integer balance = bankAccount.deposit(2);
+
+    assertThat(balance).isEqualTo(4);
+  }
 }
 
 
