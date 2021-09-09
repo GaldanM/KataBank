@@ -1,33 +1,17 @@
-import java.util.List;
-
 public class BankAccount {
-  BankAccountRepository bankAccountRepository;
-  OperationRepository operationRepository;
-  Integer id;
+  final String id;
+  private Integer balance;
 
-  BankAccount(BankAccountRepository bankAccountRepository, OperationRepository operationRepository, Integer id) {
-    this.bankAccountRepository = bankAccountRepository;
-    this.operationRepository = operationRepository;
+  BankAccount(String id) {
     this.id = id;
+    this.balance = 0;
   }
 
-  public Integer deposit(Integer amountToDeposit) {
-    Integer balance = this.bankAccountRepository.deposit(this.id, amountToDeposit);
-
-    this.operationRepository.create(this.id, Operation.OperationType.DEPOSIT, amountToDeposit, balance);
-
+  public Integer getBalance() {
     return balance;
   }
 
-  public Integer withdraw(Integer amountToWithdraw) {
-    Integer balance = this.bankAccountRepository.withdraw(this.id, amountToWithdraw);
-
-    this.operationRepository.create(this.id, Operation.OperationType.WITHDRAW, amountToWithdraw, balance);
-
-    return balance;
-  }
-
-  public List<Operation> checkHistory() {
-    return this.operationRepository.get(this.id);
+  public void setBalance(Integer newBalance) {
+    this.balance = newBalance;
   }
 }

@@ -1,5 +1,7 @@
 public interface BankAccountRepository {
-  Integer deposit(Integer bankAccountId, Integer amountToDeposit);
+  BankAccount create(String bankAccountId);
 
-  Integer withdraw(Integer bankAccountId, Integer amountToWithdraw);
+  Integer deposit(String bankAccountId, Integer amountToDeposit);
+
+  Integer withdraw(String bankAccountId, Integer amountToWithdraw);
 }

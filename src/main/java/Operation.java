@@ -1,10 +1,10 @@
 import java.util.Date;
 
 public class Operation {
-  OperationType type;
-  Integer amount;
-  Integer balanceAfterOperation;
-  Date createdAt;
+  final OperationType type;
+  final Integer amount;
+  final Integer balanceAfterOperation;
+  final Date createdAt;
 
   Operation(OperationType type, Integer amount, Integer balanceAfterOperation) {
     this.type = type;

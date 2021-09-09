@@ -5,53 +5,56 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BalanceTest {
   @Test
   void deposit() {
-    BankAccount bankAccount = createBankAccount();
-    Integer balance = bankAccount.deposit(1);
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount bankAccount = bankAccountService.createAccount("account_1");
 
-    assertThat(balance).isEqualTo(1);
+    Integer newBalance = bankAccountService.deposit(bankAccount.id, 1);
+
+    assertThat(newBalance).isEqualTo(1);
   }
 
   @Test
   void depositTwice() {
-    BankAccount bankAccount = createBankAccount();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount bankAccount = bankAccountService.createAccount("account_1");
 
-    bankAccount.deposit(2);
-    Integer balance = bankAccount.deposit(2);
+    bankAccountService.deposit(bankAccount.id, 1);
+    Integer newBalance = bankAccountService.deposit(bankAccount.id, 1);
 
-    assertThat(balance).isEqualTo(4);
+    assertThat(newBalance).isEqualTo(2);
   }
 
   @Test
   void withdraw() {
-    BankAccount bankAccount = createBankAccount();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount bankAccount = bankAccountService.createAccount("account_1");
 
-    Integer balance = bankAccount.withdraw(1);
+    Integer newBalance = bankAccountService.withdraw(bankAccount.id, 1);
 
-    assertThat(balance).isEqualTo(-1);
+    assertThat(newBalance).isEqualTo(-1);
   }
 
   @Test
   void withdrawTwice() {
-    BankAccount bankAccount = createBankAccount();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount bankAccount = bankAccountService.createAccount("account_1");
 
-    bankAccount.withdraw(2);
-    Integer balance = bankAccount.withdraw(2);
+    bankAccountService.withdraw(bankAccount.id, 1);
+    Integer newBalance = bankAccountService.withdraw(bankAccount.id, 1);
 
-    assertThat(balance).isEqualTo(-4);
+    assertThat(newBalance).isEqualTo(-2);
   }
 
   @Test
   void depositTwiceOnTwoAccounts() {
-    BankAccountRepository bankAccountRepository = new BankAccountRepositoryInMemory();
-    OperationRepositoryInMemory operationRepository = new OperationRepositoryInMemory();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount firstBankAccount = bankAccountService.createAccount("account_1");
+    BankAccount secondBankAccount = bankAccountService.createAccount("account_2");
 
-    BankAccount firstBankAccount = new BankAccount(bankAccountRepository, operationRepository, 1);
-    BankAccount secondBankAccount = new BankAccount(bankAccountRepository, operationRepository, 2);
-
-    firstBankAccount.deposit(1);
-    Integer balanceFirstBankAccount = firstBankAccount.deposit(1);
-    secondBankAccount.deposit(2);
-    Integer balanceSecondBankAccount = secondBankAccount.deposit(2);
+    bankAccountService.deposit(firstBankAccount.id, 1);
+    Integer balanceFirstBankAccount = bankAccountService.deposit(firstBankAccount.id, 1);
+    bankAccountService.deposit(secondBankAccount.id, 2);
+    Integer balanceSecondBankAccount = bankAccountService.deposit(secondBankAccount.id, 2);
 
     assertThat(balanceFirstBankAccount).isEqualTo(2);
     assertThat(balanceSecondBankAccount).isEqualTo(4);
@@ -59,23 +62,17 @@ public class BalanceTest {
 
   @Test
   void withdrawTwiceOnTwoAccounts() {
-    BankAccountRepository bankAccountRepository = new BankAccountRepositoryInMemory();
-    OperationRepositoryInMemory operationRepository = new OperationRepositoryInMemory();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount firstBankAccount = bankAccountService.createAccount("account_1");
+    BankAccount secondBankAccount = bankAccountService.createAccount("account_2");
 
-    BankAccount firstBankAccount = new BankAccount(bankAccountRepository, operationRepository, 1);
-    BankAccount secondBankAccount = new BankAccount(bankAccountRepository, operationRepository, 2);
-
-    firstBankAccount.withdraw(1);
-    Integer balanceFirstBankAccount = firstBankAccount.withdraw(1);
-    secondBankAccount.withdraw(2);
-    Integer balanceSecondBankAccount = secondBankAccount.withdraw(2);
+    bankAccountService.withdraw(firstBankAccount.id, 1);
+    Integer balanceFirstBankAccount = bankAccountService.withdraw(firstBankAccount.id, 1);
+    bankAccountService.withdraw(secondBankAccount.id, 2);
+    Integer balanceSecondBankAccount = bankAccountService.withdraw(secondBankAccount.id, 2);
 
     assertThat(balanceFirstBankAccount).isEqualTo(-2);
     assertThat(balanceSecondBankAccount).isEqualTo(-4);
-  }
-
-  private BankAccount createBankAccount() {
-    return new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory(), 1);
   }
 }
 

@@ -7,19 +7,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HistoryTest {
   @Test
   void emptyHistory() {
-    BankAccount bankAccount = createBankAccount();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount bankAccount = bankAccountService.createAccount("account_1");
 
-    List<Operation> operations = bankAccount.checkHistory();
+    List<Operation> operations = bankAccountService.checkHistory(bankAccount.id);
 
     assertThat(operations).hasSize(0);
   }
 
   @Test
   void oneDepositHistory() {
-    BankAccount bankAccount = createBankAccount();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount bankAccount = bankAccountService.createAccount("account_1");
 
-    bankAccount.deposit(1);
-    List<Operation> operations = bankAccount.checkHistory();
+    bankAccountService.deposit(bankAccount.id, 1);
+    List<Operation> operations = bankAccountService.checkHistory(bankAccount.id);
 
     assertThat(operations).hasSize(1);
     Operation operationToCheck = operations.get(0);
@@ -30,11 +32,12 @@ public class HistoryTest {
 
   @Test
   void twoDepositsHistory() {
-    BankAccount bankAccount = createBankAccount();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount bankAccount = bankAccountService.createAccount("account_1");
 
-    bankAccount.deposit(1);
-    bankAccount.deposit(1);
-    List<Operation> operations = bankAccount.checkHistory();
+    bankAccountService.deposit(bankAccount.id, 1);
+    bankAccountService.deposit(bankAccount.id, 1);
+    List<Operation> operations = bankAccountService.checkHistory(bankAccount.id);
 
     assertThat(operations).hasSize(2);
     boolean allMatch = operations.stream().allMatch(operation -> Operation.OperationType.DEPOSIT.equals(operation.type) && operation.amount.equals(1));
@@ -45,10 +48,11 @@ public class HistoryTest {
 
   @Test
   void withdrawalHistory() {
-    BankAccount bankAccount = createBankAccount();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount bankAccount = bankAccountService.createAccount("account_1");
 
-    bankAccount.withdraw(1);
-    List<Operation> operations = bankAccount.checkHistory();
+    bankAccountService.withdraw(bankAccount.id, 1);
+    List<Operation> operations = bankAccountService.checkHistory(bankAccount.id);
 
     assertThat(operations).hasSize(1);
     Operation operationToCheck = operations.get(0);
@@ -59,19 +63,17 @@ public class HistoryTest {
 
   @Test
   void twoAccountsHistory() {
-    BankAccountRepository bankAccountRepository = new BankAccountRepositoryInMemory();
-    OperationRepositoryInMemory operationRepository = new OperationRepositoryInMemory();
+    BankAccountService bankAccountService = new BankAccountService(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory());
+    BankAccount firstBankAccount = bankAccountService.createAccount("account_1");
+    BankAccount secondBankAccount = bankAccountService.createAccount("account_2");
 
-    BankAccount firstBankAccount = new BankAccount(bankAccountRepository, operationRepository, 1);
-    BankAccount secondBankAccount = new BankAccount(bankAccountRepository, operationRepository, 2);
+    bankAccountService.withdraw(firstBankAccount.id, 1);
+    bankAccountService.withdraw(firstBankAccount.id, 1);
+    bankAccountService.deposit(secondBankAccount.id, 2);
+    bankAccountService.deposit(secondBankAccount.id, 2);
 
-    firstBankAccount.withdraw(1);
-    firstBankAccount.withdraw(1);
-    secondBankAccount.deposit(2);
-    secondBankAccount.deposit(2);
-
-    List<Operation> operationsFirstBankAccount = firstBankAccount.checkHistory();
-    List<Operation> operationsSecondBankAccount = secondBankAccount.checkHistory();
+    List<Operation> operationsFirstBankAccount = bankAccountService.checkHistory(firstBankAccount.id);
+    List<Operation> operationsSecondBankAccount = bankAccountService.checkHistory(secondBankAccount.id);
 
     assertThat(operationsFirstBankAccount).hasSize(2);
     boolean allMatch = operationsFirstBankAccount.stream().allMatch(operation -> Operation.OperationType.WITHDRAW.equals(operation.type) && operation.amount.equals(1));
@@ -84,9 +86,5 @@ public class HistoryTest {
     assertThat(allMatch).isTrue();
     assertThat(operationsSecondBankAccount.get(0).balanceAfterOperation).isEqualTo(2);
     assertThat(operationsSecondBankAccount.get(1).balanceAfterOperation).isEqualTo(4);
-  }
-
-  private BankAccount createBankAccount() {
-    return new BankAccount(new BankAccountRepositoryInMemory(), new OperationRepositoryInMemory(), 1);
   }
 }

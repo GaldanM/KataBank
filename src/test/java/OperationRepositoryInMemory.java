@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class OperationRepositoryInMemory implements OperationRepository {
-  Map<Integer, List<Operation>> accountsOperations;
+  Map<String, List<Operation>> accountsOperations;
 
   OperationRepositoryInMemory() {
     this.accountsOperations = new HashMap<>();
@@ -14,22 +14,18 @@ public class OperationRepositoryInMemory implements OperationRepository {
 
   @Override
   public void create(
-      Integer bankAccountId,
+      String bankAccountId,
       Operation.OperationType type,
       Integer amount,
       Integer balanceAfterOperation
   ) {
     Operation newOperation = new Operation(type, amount, balanceAfterOperation);
 
-    this.accountsOperations.merge(
-        bankAccountId,
-        new ArrayList<>() {{ add(newOperation); }},
-        (oldList, newList) -> Stream.concat(oldList.stream(), newList.stream()).collect(Collectors.toList())
-    );
+    this.accountsOperations.computeIfAbsent(bankAccountId, k -> new ArrayList<>()).add(newOperation);
   }
 
   @Override
-  public List<Operation> get(Integer bankAccountId) {
+  public List<Operation> get(String bankAccountId) {
     List<Operation> operations = this.accountsOperations.get(bankAccountId);
 
     if (operations == null) {
