@@ -1,8 +1,15 @@
+package services;
+
+import entities.BankAccount;
+import entities.Operation;
+import repositories.BankAccountRepository;
+import repositories.OperationRepository;
+
 import java.util.List;
 
 public class BankAccountService {
-  BankAccountRepository bankAccountRepository;
-  OperationRepository operationRepository;
+  private final BankAccountRepository bankAccountRepository;
+  private final OperationRepository operationRepository;
 
   public BankAccountService(BankAccountRepository bankAccountRepository, OperationRepository operationRepository) {
     this.bankAccountRepository = bankAccountRepository;

@@ -1,8 +1,10 @@
+package entities;
+
 public class BankAccount {
-  final String id;
+  public final String id;
   private Integer balance;
 
-  BankAccount(String id) {
+  public BankAccount(String id) {
     this.id = id;
     this.balance = 0;
   }

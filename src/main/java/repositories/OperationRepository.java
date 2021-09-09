@@ -1,3 +1,7 @@
+package repositories;
+
+import entities.Operation;
+
 import java.util.List;
 
 public interface OperationRepository {

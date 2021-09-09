@@ -1,3 +1,7 @@
+package repositories;
+
+import entities.BankAccount;
+
 public interface BankAccountRepository {
   BankAccount create(String bankAccountId);
 

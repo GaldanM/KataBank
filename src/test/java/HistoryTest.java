@@ -1,4 +1,9 @@
+import entities.BankAccount;
+import entities.Operation;
 import org.junit.jupiter.api.Test;
+import repositories.BankAccountRepositoryInMemory;
+import repositories.OperationRepositoryInMemory;
+import services.BankAccountService;
 
 import java.util.List;
 

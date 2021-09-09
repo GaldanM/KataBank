@@ -1,8 +1,12 @@
+package repositories;
+
+import entities.BankAccount;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class BankAccountRepositoryInMemory implements BankAccountRepository {
-  Map<String, BankAccount> bankAccounts;
+  private final Map<String, BankAccount> bankAccounts;
 
   public BankAccountRepositoryInMemory() {
     this.bankAccounts = new HashMap<>();

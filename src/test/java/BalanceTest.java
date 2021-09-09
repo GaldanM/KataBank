@@ -1,4 +1,8 @@
+import entities.BankAccount;
 import org.junit.jupiter.api.Test;
+import repositories.BankAccountRepositoryInMemory;
+import repositories.OperationRepositoryInMemory;
+import services.BankAccountService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

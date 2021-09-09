@@ -1,14 +1,16 @@
+package repositories;
+
+import entities.Operation;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class OperationRepositoryInMemory implements OperationRepository {
-  Map<String, List<Operation>> accountsOperations;
+  private final Map<String, List<Operation>> accountsOperations;
 
-  OperationRepositoryInMemory() {
+  public OperationRepositoryInMemory() {
     this.accountsOperations = new HashMap<>();
   }
 
